@@ -1,7 +1,7 @@
 public class Medico {
-  String nome;
-  String cpf;
-  String especialidade;
+  private String nome;
+  private String cpf;
+  private String especialidade;
 
   public Medico(String nome, String cpf, String especialidade) {
     this.nome = nome;

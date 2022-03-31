@@ -5,7 +5,6 @@ public class App {
 
   public static void main(String[] args) {
 
-    Scanner leitorString = new Scanner(System.in);
     Scanner leitorInt = new Scanner(System.in);
 
     int opcaoEscolhida = 0;
@@ -22,7 +21,7 @@ public class App {
     while (opcaoEscolhida != 9) {
       clearScreen();
       // Menu
-      System.out.println("*** Escolha uma das opções abaixo ***");
+      System.out.println("\n*** Escolha uma das opções abaixo ***");
       System.out.println("\n1 - Cadastrar médico");
       System.out.println("\n2 - Cadastrar paciente");
       System.out.println("\n3 - Novo agendamento");
@@ -62,7 +61,7 @@ public class App {
           break;
 
         case 7:
-          System.out.println("\nOpção 7 selecionada");
+          listarPacientes(pacientes);
           break;
 
         case 8:
@@ -70,7 +69,7 @@ public class App {
           break;
 
         case 9:
-          System.out.println("\nOpção 9 selecionada");
+          System.out.println("\nSaindo...");
           break;
 
         default:
@@ -122,23 +121,32 @@ public class App {
   }
 
   private static void listarMedicos(ArrayList<Medico> medicos) {
+    Scanner leitorString = new Scanner(System.in);
+
     System.out.println("\nLista de médicos cadastrados:");
     for (Medico medico : medicos) {
-      System.out.println(medico.getNome());
+      System.out.println("------------------------------");
+      System.out.println("Nome: " + medico.getNome());
+      System.out.println("CPF: " + medico.getCpf());
+      System.out.println("Especialidade: " + medico.getEspecialidade());
+      System.out.println("------------------------------");
     }
+    System.out.println("Pressione ENTER para continuar...");
+    leitorString.nextLine();
   }
 
   private static void listarPacientes(ArrayList<Paciente> pacientes) {
+    Scanner leitorString = new Scanner(System.in);
+
     System.out.println("\nLista de pacientes cadastrados:");
     for (Paciente paciente : pacientes) {
-      System.out.println(paciente.toString());
+      System.out.println("------------------------------");
+      System.out.println("Nome: " + paciente.getNome());
+      System.out.println("CPF: " + paciente.getCpf());
+      System.out.println("Endereço: " + paciente.getEndereco());
+      System.out.println("------------------------------");
     }
-  }
-
-  private static void listarAgendamentos(ArrayList<Agendamento> agendamentos) {
-    System.out.println("\nLista de agendamentos:");
-    for (Agendamento agendamento : agendamentos) {
-      System.out.println(agendamento.toString());
-    }
+    System.out.println("Pressione ENTER para continuar...");
+    leitorString.nextLine();
   }
 }
