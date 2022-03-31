@@ -5,6 +5,7 @@ public class App {
 
   public static void main(String[] args) {
 
+    Scanner leitorString = new Scanner(System.in);
     Scanner leitorInt = new Scanner(System.in);
 
     int opcaoEscolhida = 0;
@@ -37,15 +38,15 @@ public class App {
 
       switch (opcaoEscolhida) {
         case 1:
-          medicos.add(cadastrarMedico());
+          medicos.add(cadastrarMedico(leitorString));
           break;
 
         case 2:
-          pacientes.add(cadastrarPaciente());
+          pacientes.add(cadastrarPaciente(leitorString));
           break;
 
         case 3:
-          criaAgendamento(medicos, pacientes, agendamentos);
+          criaAgendamento(medicos, pacientes, agendamentos, leitorString);
           break;
 
         case 4:
@@ -57,11 +58,11 @@ public class App {
           break;
 
         case 6:
-          listarMedicos(medicos);
+          listarMedicos(medicos, leitorString);
           break;
 
         case 7:
-          listarPacientes(pacientes);
+          listarPacientes(pacientes, leitorString);
           break;
 
         case 8:
@@ -78,10 +79,17 @@ public class App {
       }
     }
 
+    leitorString.close();
+    leitorInt.close();
   }
 
-  private static Medico cadastrarMedico() {
-    Scanner leitorString = new Scanner(System.in);
+  public static void clearScreen() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+  }
+
+  private static Medico cadastrarMedico(Scanner leitorString) {
+    System.out.println("\nNovo cadastro de médico:");
 
     System.out.println("\nDigite o nome do médico:");
     String nome = leitorString.nextLine();
@@ -95,8 +103,8 @@ public class App {
     return new Medico(nome, cpf, especialidade);
   }
 
-  private static Paciente cadastrarPaciente() {
-    Scanner leitorString = new Scanner(System.in);
+  private static Paciente cadastrarPaciente(Scanner leitorString) {
+    System.out.println("\nNovo cadastro de paciente:");
 
     System.out.println("\nDigite o nome do paciente:");
     String nome = leitorString.nextLine();
@@ -110,43 +118,100 @@ public class App {
     return new Paciente(nome, cpf, endereco);
   }
 
-  public static void clearScreen() {
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
-  }
-
   private static void criaAgendamento(ArrayList<Medico> medicos, ArrayList<Paciente> pacientes,
-      ArrayList<Agendamento> agendamentos) {
+      ArrayList<Agendamento> agendamentos, Scanner leitorString) {
+    System.out.println("\nNovo agendamento:");
 
+    System.out.println("\nDigite o nome do paciente:");
+    String nomePaciente = leitorString.nextLine();
+    boolean pacienteExiste = validaPaciente(pacientes, nomePaciente, leitorString);
+
+    if (pacienteExiste) {
+      System.out.println("\nDigite a especialidade procurada:");
+      String especialidade = leitorString.nextLine();
+      boolean medicoExiste = validaMedico(medicos, especialidade, leitorString);
+
+      if (medicoExiste) {
+        ArrayList<Medico> listaMedicosFiltrada = new ArrayList<Medico>();
+        for (Medico medico : medicos) {
+          if (medico.getEspecialidade().equals(especialidade)) {
+            listaMedicosFiltrada.add(medico);
+          }
+        }
+        listarMedicos(listaMedicosFiltrada, leitorString);
+
+        System.out.println("\nDigite o CPF do médico escolhido:");
+        String cpfMedico = leitorString.nextLine();
+
+        System.out.println("\nDigite a data da consulta: (dd/mm/aaaa-hh:mm)");
+        String dataConsulta = leitorString.nextLine();
+
+        agendamentos.add(new Agendamento(agendamentos.size() + 1, medicos.get(0), pacientes.get(0), dataConsulta));
+      }
+    }
   }
 
-  private static void listarMedicos(ArrayList<Medico> medicos) {
-    Scanner leitorString = new Scanner(System.in);
-
-    System.out.println("\nLista de médicos cadastrados:");
-    for (Medico medico : medicos) {
-      System.out.println("------------------------------");
-      System.out.println("Nome: " + medico.getNome());
-      System.out.println("CPF: " + medico.getCpf());
-      System.out.println("Especialidade: " + medico.getEspecialidade());
-      System.out.println("------------------------------");
+  private static boolean validaPaciente(ArrayList<Paciente> pacientes, String nomePaciente, Scanner leitorString) {
+    boolean pacienteExiste = false;
+    for (Paciente paciente : pacientes) {
+      if (paciente.getNome().equals(nomePaciente)) {
+        pacienteExiste = true;
+      }
     }
-    System.out.println("Pressione ENTER para continuar...");
+    if (!pacienteExiste) {
+      System.out.println("\nPaciente não cadastrado!");
+      System.out.println("\nPressione ENTER para continuar...");
+      leitorString.nextLine();
+    }
+    return pacienteExiste;
+  }
+
+  private static boolean validaMedico(ArrayList<Medico> medicos, String especialidade, Scanner leitorString) {
+    boolean medicoExiste = false;
+    for (Medico medico : medicos) {
+      if (medico.getEspecialidade().equals(especialidade)) {
+        medicoExiste = true;
+      }
+    }
+    if (!medicoExiste) {
+      System.out.println("\nNenhum médico com essa especialidade disponível!");
+      System.out.println("\nPressione ENTER para continuar...");
+      leitorString.nextLine();
+    }
+    return medicoExiste;
+  }
+
+  private static void listarMedicos(ArrayList<Medico> medicos, Scanner leitorString) {
+    System.out.println("\nLista de médicos cadastrados:");
+    if (medicos.size() == 0) {
+      System.out.println("\nNenhum médico cadastrado!");
+    } else {
+      for (Medico medico : medicos) {
+        System.out.println("------------------------------");
+        System.out.println("Nome: " + medico.getNome());
+        System.out.println("CPF: " + medico.getCpf());
+        System.out.println("Especialidade: " + medico.getEspecialidade());
+        System.out.println("------------------------------");
+      }
+    }
+    System.out.println("\nPressione ENTER para continuar...");
     leitorString.nextLine();
   }
 
-  private static void listarPacientes(ArrayList<Paciente> pacientes) {
-    Scanner leitorString = new Scanner(System.in);
-
+  private static void listarPacientes(ArrayList<Paciente> pacientes, Scanner leitorString) {
     System.out.println("\nLista de pacientes cadastrados:");
-    for (Paciente paciente : pacientes) {
-      System.out.println("------------------------------");
-      System.out.println("Nome: " + paciente.getNome());
-      System.out.println("CPF: " + paciente.getCpf());
-      System.out.println("Endereço: " + paciente.getEndereco());
-      System.out.println("------------------------------");
+    if (pacientes.size() == 0) {
+      System.out.println("\nNenhum paciente cadastrado!");
+    } else {
+      for (Paciente paciente : pacientes) {
+        System.out.println("------------------------------");
+        System.out.println("Nome: " + paciente.getNome());
+        System.out.println("CPF: " + paciente.getCpf());
+        System.out.println("Endereço: " + paciente.getEndereco());
+        System.out.println("------------------------------");
+      }
     }
-    System.out.println("Pressione ENTER para continuar...");
+    System.out.println("\nPressione ENTER para continuar...");
     leitorString.nextLine();
   }
 }
