@@ -38,11 +38,11 @@ public class App {
 
       switch (opcaoEscolhida) {
         case 1:
-          medicos.add(cadastrarMedico(leitorString));
+          cadastrarMedico(medicos, leitorString);
           break;
 
         case 2:
-          pacientes.add(cadastrarPaciente(leitorString));
+          cadastrarPaciente(pacientes, leitorString);
           break;
 
         case 3:
@@ -88,8 +88,8 @@ public class App {
     System.out.flush();
   }
 
-  private static Medico cadastrarMedico(Scanner leitorString) {
-    System.out.println("\nNovo cadastro de médico:");
+  private static void cadastrarMedico(ArrayList<Medico> medicos, Scanner leitorString) {
+    System.out.println("\n***Novo cadastro de médico***");
 
     System.out.println("\nDigite o nome do médico:");
     String nome = leitorString.nextLine();
@@ -100,11 +100,11 @@ public class App {
     System.out.println("\nDigite a especialidade do médico:");
     String especialidade = leitorString.nextLine();
 
-    return new Medico(nome, cpf, especialidade);
+    medicos.add(new Medico(nome, cpf, especialidade));
   }
 
-  private static Paciente cadastrarPaciente(Scanner leitorString) {
-    System.out.println("\nNovo cadastro de paciente:");
+  private static void cadastrarPaciente(ArrayList<Paciente> pacientes, Scanner leitorString) {
+    System.out.println("\n***Novo cadastro de paciente***");
 
     System.out.println("\nDigite o nome do paciente:");
     String nome = leitorString.nextLine();
@@ -115,20 +115,30 @@ public class App {
     System.out.println("\nDigite o endereço do paciente:");
     String endereco = leitorString.nextLine();
 
-    return new Paciente(nome, cpf, endereco);
+    pacientes.add(new Paciente(nome, cpf, endereco));
   }
 
   private static void criaAgendamento(ArrayList<Medico> medicos, ArrayList<Paciente> pacientes,
       ArrayList<Agendamento> agendamentos, Scanner leitorString) {
-    System.out.println("\nNovo agendamento:");
+    System.out.println("\n***Novo agendamento***");
 
     System.out.println("\nDigite o nome do paciente:");
     String nomePaciente = leitorString.nextLine();
+
     boolean pacienteExiste = validaPaciente(pacientes, nomePaciente, leitorString);
 
     if (pacienteExiste) {
+      Paciente pacienteEscolhido = null;
+
+      for (Paciente paciente : pacientes) {
+        if (paciente.getNome().equals(nomePaciente)) {
+          pacienteEscolhido = paciente;
+        }
+      }
+
       System.out.println("\nDigite a especialidade procurada:");
       String especialidade = leitorString.nextLine();
+
       boolean medicoExiste = validaMedico(medicos, especialidade, leitorString);
 
       if (medicoExiste) {
@@ -140,13 +150,25 @@ public class App {
         }
         listarMedicos(listaMedicosFiltrada, leitorString);
 
-        System.out.println("\nDigite o CPF do médico escolhido:");
-        String cpfMedico = leitorString.nextLine();
+        System.out.println("\nDigite o nome do médico escolhido:");
+        String nomeMedico = leitorString.nextLine();
 
-        System.out.println("\nDigite a data da consulta: (dd/mm/aaaa-hh:mm)");
-        String dataConsulta = leitorString.nextLine();
+        boolean nomeCorreto = validaMedico(listaMedicosFiltrada, nomeMedico, leitorString);
 
-        agendamentos.add(new Agendamento(agendamentos.size() + 1, medicos.get(0), pacientes.get(0), dataConsulta));
+        if (nomeCorreto) {
+          Medico medicoEscolhido = null;
+
+          for (Medico medico : listaMedicosFiltrada) {
+            if (medico.getNome().equals(nomeCorreto)) {
+              medicoEscolhido = medico;
+            }
+          }
+
+          System.out.println("\nDigite a data da consulta: (dd/mm/aaaa-hh:mm)");
+          String dataConsulta = leitorString.nextLine();
+
+          agendamentos.add(new Agendamento(agendamentos.size() + 1, medicoEscolhido, pacienteEscolhido, dataConsulta));
+        }
       }
     }
   }
@@ -166,15 +188,15 @@ public class App {
     return pacienteExiste;
   }
 
-  private static boolean validaMedico(ArrayList<Medico> medicos, String especialidade, Scanner leitorString) {
+  private static boolean validaMedico(ArrayList<Medico> medicos, String info, Scanner leitorString) {
     boolean medicoExiste = false;
     for (Medico medico : medicos) {
-      if (medico.getEspecialidade().equals(especialidade)) {
+      if (medico.getEspecialidade().equals(info) || medico.getNome().equals(info)) {
         medicoExiste = true;
       }
     }
     if (!medicoExiste) {
-      System.out.println("\nNenhum médico com essa especialidade disponível!");
+      System.out.println("\nNenhum médico disponível!");
       System.out.println("\nPressione ENTER para continuar...");
       leitorString.nextLine();
     }
