@@ -222,11 +222,7 @@ public class App {
       listaDeConsultas.ordenar();
       for (Agendamento agendamento : listaDeConsultas.agendamentos) {
         if (agendamento.medico.getNome().equals(nomeMedico)) {
-          System.out.println("\n------------------------------");
-          System.out.println("Agendamento: " + agendamento.idAgendamento);
-          System.out.println("Paciente: " + agendamento.paciente.getNome());
-          System.out.println("Data: " + agendamento.data);
-          System.out.println("------------------------------");
+          System.out.println(agendamento.toString());
         }
       }
 
@@ -249,11 +245,7 @@ public class App {
       listaDeConsultas.ordenar();
       for (Agendamento agendamento : listaDeConsultas.agendamentos) {
         if (agendamento.paciente.getNome().equals(nomePaciente)) {
-          System.out.println("\n------------------------------");
-          System.out.println("Agendamento: " + agendamento.idAgendamento);
-          System.out.println("Médico: " + agendamento.medico.getNome());
-          System.out.println("Data: " + agendamento.data);
-          System.out.println("------------------------------");
+          System.out.println(agendamento.toString());
         }
       }
 
@@ -268,11 +260,7 @@ public class App {
       System.out.println("\nNenhum médico cadastrado!");
     } else {
       for (Medico medico : medicos) {
-        System.out.println("------------------------------");
-        System.out.println("Nome: " + medico.getNome());
-        System.out.println("CPF: " + medico.getCpf());
-        System.out.println("Especialidade: " + medico.getEspecialidade());
-        System.out.println("------------------------------");
+        System.out.println(medico.toString());
       }
     }
     System.out.println("\nPressione ENTER para continuar...");
@@ -285,11 +273,7 @@ public class App {
       System.out.println("\nNenhum paciente cadastrado!");
     } else {
       for (Paciente paciente : pacientes) {
-        System.out.println("------------------------------");
-        System.out.println("Nome: " + paciente.getNome());
-        System.out.println("CPF: " + paciente.getCpf());
-        System.out.println("Endereço: " + paciente.getEndereco());
-        System.out.println("------------------------------");
+        System.out.println(paciente.toString());
       }
     }
     System.out.println("\nPressione ENTER para continuar...");
@@ -303,12 +287,7 @@ public class App {
     } else {
       listaDeConsultas.ordenar();
       for (int i = 0; i < listaDeConsultas.tamanho(); i++) {
-        System.out.println("\n------------------------------");
-        System.out.println("Agendamento: " + listaDeConsultas.get(i).idAgendamento);
-        System.out.println("Médico: " + listaDeConsultas.get(i).medico.getNome());
-        System.out.println("Paciente: " + listaDeConsultas.get(i).paciente.getNome());
-        System.out.println("Data: " + listaDeConsultas.get(i).data);
-        System.out.println("------------------------------");
+        System.out.println(listaDeConsultas.get(i).toString());
       }
     }
     System.out.println("\nPressione ENTER para continuar...");

@@ -9,4 +9,16 @@ public class Medico extends Pessoa {
   public String getEspecialidade() {
     return especialidade;
   }
+
+  public String toString() {
+    String retorno = "";
+
+    retorno += "------------------------------" + "\n";
+    retorno += "Nome: " + getNome() + "\n";
+    retorno += "CPF: " + getCpf() + "\n";
+    retorno += "Especialidade: " + getEspecialidade() + "\n";
+    retorno += "------------------------------";
+
+    return retorno;
+  }
 }
