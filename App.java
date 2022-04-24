@@ -182,8 +182,23 @@ public class App {
             }
           }
 
-          System.out.println("\nDigite a data da consulta: (dd/mm/aaaa-hh:mm)");
-          String dataConsulta = leitorString.nextLine();
+          boolean continuarDigitacaoData = true;
+          String dataConsulta = "";
+
+          while (continuarDigitacaoData) {
+            System.out.println("\nDigite a data da consulta: (dd/mm/aaaa hh:mm)");
+            dataConsulta = leitorString.nextLine();
+
+            boolean formatoValido = dataConsulta.matches("([0-9]{2})/([0-9]{2})/([0-9]{4}) ([0-9]{2}):([0-9]{2})");
+
+            if (formatoValido) {
+              continuarDigitacaoData = false;
+            } else {
+              System.out.println("\nFormato inválido! Tente novamente.");
+              System.out.println("\nPressione ENTER para continuar...");
+              leitorString.nextLine();
+            }
+          }
 
           listaDeConsultas
               .incluirNoFim(
@@ -284,6 +299,7 @@ public class App {
     if (listaDeConsultas.tamanho() == 0) {
       System.out.println("\nNenhuma consulta agendada!");
     } else {
+      listaDeConsultas.ordenar();
       for (int i = 0; i < listaDeConsultas.tamanho(); i++) {
         System.out.println("\n------------------------------");
         System.out.println("Agendamento: " + listaDeConsultas.get(i).idAgendamento);
