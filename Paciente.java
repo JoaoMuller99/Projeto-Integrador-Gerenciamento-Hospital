@@ -1,20 +1,9 @@
-public class Paciente {
-  private String nome;
-  private String cpf;
+public class Paciente extends Pessoa {
   private String endereco;
 
   public Paciente(String nome, String cpf, String endereco) {
-    this.nome = nome;
-    this.cpf = cpf;
+    super(nome, cpf);
     this.endereco = endereco;
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public String getCpf() {
-    return cpf;
   }
 
   public String getEndereco() {
