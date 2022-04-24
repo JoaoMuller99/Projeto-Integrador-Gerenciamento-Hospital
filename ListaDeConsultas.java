@@ -27,7 +27,14 @@ public class ListaDeConsultas {
   }
 
   public Agendamento get(int indice) {
-    return agendamentos.get(indice);
+    try {
+      Agendamento agendamento = agendamentos.get(indice);
+      return agendamento;
+    } catch (Exception e) {
+      System.out.println("\n" + "Erro: " + e.getMessage() + "\n");
+      System.out.println("Indice inválido, último elemento da lista retonado." + "\n");
+      return agendamentos.get(this.tamanho() - 1);
+    }
   }
 
   public void ordenar() {
