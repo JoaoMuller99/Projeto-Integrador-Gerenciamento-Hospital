@@ -219,6 +219,7 @@ public class App {
     if (medicoEncontrado) {
       System.out.println("\n*** Consultas do médico " + nomeMedico + " ***");
 
+      listaDeConsultas.ordenar();
       for (Agendamento agendamento : listaDeConsultas.agendamentos) {
         if (agendamento.medico.getNome().equals(nomeMedico)) {
           System.out.println("\n------------------------------");
@@ -245,6 +246,7 @@ public class App {
     if (pacienteEncontrado) {
       System.out.println("\n*** Consultas do paciente " + nomePaciente + " ***");
 
+      listaDeConsultas.ordenar();
       for (Agendamento agendamento : listaDeConsultas.agendamentos) {
         if (agendamento.paciente.getNome().equals(nomePaciente)) {
           System.out.println("\n------------------------------");
